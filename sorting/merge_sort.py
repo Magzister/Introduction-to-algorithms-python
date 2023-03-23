@@ -25,7 +25,12 @@ def merge(array: List[int], p: int, q: int, r: int) -> None:
             j += 1
 
 
-def merge_sort(array: List[int], p: int, r: int):
+def merge_sort(array: List[int], p: int = None, r: int = None):
+    if p is None:
+        p = 0
+    if r is None:
+        r = len(array) - 1
+
     if p < r:
         q = (p + r) // 2
         merge_sort(array, p, q)

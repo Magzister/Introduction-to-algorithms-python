@@ -4,7 +4,6 @@ from sorting.decorators.decorators import timeit
 
 
 def binary_search(array: List[int], value: int, left: int, right: int) -> int:
-    middle = 0
     while left <= right:
         middle = (right + left) // 2
         if array[middle] > value:
