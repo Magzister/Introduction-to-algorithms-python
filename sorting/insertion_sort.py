@@ -1,13 +1,9 @@
-from typing import List
-
-from sorting.decorators.decorators import timeit
-from sorting.utilities.utilities import Utilities
-
-from search.binary_search import binary_search
+from decorators.decorators import timeit
+from utilities.utilities import Utilities
 
 
 @timeit
-def insertion_sort(array: List[int]) -> None:
+def insertion_sort(array: list[int]) -> None:
     for j in range(1, len(array)):
         key = array[j]
         i = j - 1
@@ -17,30 +13,27 @@ def insertion_sort(array: List[int]) -> None:
         array[i + 1] = key
 
 
-@timeit
-def binary_insertion_sort(array: List[int]) -> None:
-    for j in range(1, len(array)):
-        key = array[j]
-        index = binary_search(array, key, 0, j - 1)
-        while j > index:
-            array[j] = array[j - 1]
-            j -= 1
-        array[j] = key
+NUMBER_OF_ITERATION = 5
+SIZE_OF_SEQUENCES = [
+    1_000,
+    10_000,
+    100_000,
+]
 
 
 if __name__ == "__main__":
-    sequence = Utilities.generate_number_sequence(10_000)
-    insertion_sort(sequence)
-    is_sorted = Utilities.check_sorted_sequence(sequence)
-    if not is_sorted:
-        print("Something went wrong. Array was not sorted =(")
-    else:
-        print("Everything is OK =)")
+    for size in SIZE_OF_SEQUENCES:
+        sequence = Utilities.generate_number_sequence(100_000)
+        _, time = insertion_sort(sequence)
+        print(time)
+        total_time = 0
+        for i in range(NUMBER_OF_ITERATION):
+            sequence = Utilities.generate_number_sequence(size)
+            _, time = insertion_sort(sequence)
 
-    sequence = Utilities.generate_number_sequence(10_000)
-    binary_insertion_sort(sequence)
-    is_sorted = Utilities.check_sorted_sequence(sequence)
-    if not is_sorted:
-        print("Something went wrong. Array was not sorted =(")
-    else:
-        print("Everything is OK =)")
+            is_sorted = Utilities.check_sorted_sequence(sequence)
+            if not is_sorted:
+                print("Something went wrong. Array was not sorted =(")
+
+            total_time += time
+        print(f"Insertion sort took {total_time / NUMBER_OF_ITERATION} on average for {size} elements")
